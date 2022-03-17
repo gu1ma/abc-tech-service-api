@@ -1,14 +1,14 @@
 version: 0.2
-  pre_build:
-    commands:
-      - echo "Pre build phase - Example: downlaod dependencies..."
+pre_build:
+  commands:
+    - echo "Pre build phase - Example: downlaod dependencies..."
   build:
     commands:
       - echo "Building"
       - mnv clean compile package
   post_build:
     commands:
-      - echo "Moving files with will be uploaded"
+      - echo "Moving files that will be uploaded"
       - mv target/*.war ./ROOT.war
 artifacts:
   files:
