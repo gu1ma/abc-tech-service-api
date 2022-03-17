@@ -3,14 +3,14 @@ phases:
   pre_build:
     commands:
       - echo "Pre build phase - Example downlaod dependencies..."
-    build:
-      commands:
-        - echo "Building"
-        - mvn clean compile package
-    post_build:
-      commands:
-        - echo "Moving files that will be uploaded"
-        - mv target/*.war ./ROOT.war
+  build:
+    commands:
+      - echo "Building"
+      - mvn clean compile package
+  post_build:
+    commands:
+      - echo "Moving files that will be uploaded"
+      - mv target/*.war ./ROOT.war
 artifacts:
   files:
     - ROOT.war
