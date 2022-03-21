@@ -11,7 +11,7 @@ public class PropertiesComponent {
     private Properties properties;
 
     public PropertiesComponent() {
-        Properties properties = new Properties();
+        properties = new Properties();
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("application.yml");
 
         try {
