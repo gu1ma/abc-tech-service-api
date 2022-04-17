@@ -1,5 +1,7 @@
 package br.com.fiap.abctechservice.controller;
 
+import br.com.fiap.abctechservice.application.AssistanceApplication;
+import br.com.fiap.abctechservice.application.dto.AssistDTO;
 import br.com.fiap.abctechservice.model.Assistance;
 import br.com.fiap.abctechservice.service.AssistanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +15,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/assistance")
 public class AssistanceController {
-    private final AssistanceService assistanceService;
+    private final AssistanceApplication assistanceApplication;
 
     public AssistanceController(
             @Autowired
-            AssistanceService assistanceService
+            AssistanceApplication assistanceApplication
     ) {
-        this.assistanceService = assistanceService;
+        this.assistanceApplication = assistanceApplication;
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Assistance>> getAssistances() {
-        List<Assistance> list = this.assistanceService.getAssistsList();
+    public ResponseEntity<List<AssistDTO>> getAssistances() {
+        List<AssistDTO> list = this.assistanceApplication.getAssists();
         return ResponseEntity.ok(list);
     }
 }
