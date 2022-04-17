@@ -16,47 +16,50 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 public class OrderServiceTest {
     @Mock
     private OrderRepository orderRepository;
     private OrderService orderService;
+    @Mock
+    private AssistanceRepository assistanceRepository;
 
     @BeforeEach
     public void init () {
         MockitoAnnotations.openMocks(this);
-        orderService = new OrderServiceImpl(orderRepository);
+        orderService = new OrderServiceImpl(orderRepository, assistanceRepository);
+        when(assistanceRepository.findById(any())).thenReturn(Optional.of(new Assistance(1L, "Mock test", "MOck Description")));
     }
 
     @Test
     public void checkIfOrderIsSaving() {
         Order order = new Order();
-        List<Assistance> assistances = getAssistancesList(1);
         order.setId(123L);
-        order.setServices(assistances);
+
         order.setOperatorId(321L);
 
-        orderService.saveOrder(order);
+        orderService.saveOrder(order, getAssistancesList(1));
 
-        //Mockito.verify(orderRepository, Mockito.times(1))
         verify(orderRepository, Mockito.times(1)).save(order);
     }
 
     @Test
     public void shouldNotSaveIfHaveNotAssistances() {
         Order order = new Order();
-        List<Assistance> assistances = getAssistancesList(0);
         order.setId(123L);
         order.setOperatorId(321L);
-        order.setServices(assistances);
 
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> orderService.saveOrder(order));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> orderService.saveOrder(order, List.of()));
     }
 
     @Test()
@@ -64,20 +67,17 @@ public class OrderServiceTest {
         Order order = new Order();
         order.setId(123L);
         order.setOperatorId(321L);
-        List<Assistance> assistances;
-        assistances = getAssistancesList(22);
-        order.setServices(assistances);
 
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> orderService.saveOrder(order));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> orderService.saveOrder(order, getAssistancesList(22)));
     }
 
-    public List<Assistance> getAssistancesList(int qtd) {
-        List<Assistance> assistances = new ArrayList<>();
+    public List<Long> getAssistancesList(int qtd) {
+        List<Long> arrayIds = new ArrayList<>();
 
         for(int a = 0; a < qtd; a++) {
-            assistances.add(new Assistance(Long.valueOf(a), "mockTitle: " + a, "mockDesc: " + a));
+            arrayIds.add(Integer.toUnsignedLong(a));
         }
 
-        return assistances;
+        return arrayIds;
     }
 }
