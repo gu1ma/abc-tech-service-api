@@ -11,6 +11,4 @@ spring:
     password: {$DB_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: false
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+      ddl-auto: none
