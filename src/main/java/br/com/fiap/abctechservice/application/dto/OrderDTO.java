@@ -1,5 +1,6 @@
 package br.com.fiap.abctechservice.application.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,6 @@ import java.util.List;
 public class OrderDTO {
     private Long operatorId;
     private List<Long> services;
-    private OrderLocationDTO startOrderLocation;
-    private OrderLocationDTO endOrderLocation;
+    private OrderLocationDTO start;
+    private OrderLocationDTO end;
 }

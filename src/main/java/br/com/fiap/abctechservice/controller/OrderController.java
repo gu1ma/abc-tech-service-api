@@ -1,34 +1,29 @@
 package br.com.fiap.abctechservice.controller;
 
+import br.com.fiap.abctechservice.application.OrderApplication;
+import br.com.fiap.abctechservice.application.dto.OrderDTO;
 import br.com.fiap.abctechservice.model.Order;
 import br.com.fiap.abctechservice.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/order")
 public class OrderController {
-    private final OrderService service;
+    private final OrderApplication orderApplication;
 
     public OrderController(
             @Autowired
-            OrderService orderService
-    ) {
-        this.service = orderService;
+            OrderApplication orderApplication) {
+        this.orderApplication = orderApplication;
     }
 
-    @GetMapping("/teste") public ResponseEntity<String> teste() {
-        return ResponseEntity.ok("teste pai");
-    }
-
-    @GetMapping("")
-    public ResponseEntity<List<Order>> getOrders() {
-        List<Order> orders = this.service.getOrderList();
-        return ResponseEntity.ok(orders);
+    @PostMapping()
+    public ResponseEntity createOrder(@RequestBody OrderDTO orderDTO) {
+        orderApplication.createOrder(orderDTO);
+        return ResponseEntity.ok().build();
     }
 }
